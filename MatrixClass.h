@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
+#include <cmath>
 typedef double mytype;
 
 mytype	EPS = 10e-3;
@@ -112,24 +113,24 @@ public:
 	//     }
 	//   }
 	// }
-
+	// friend std::vector<T>& operator -(const std::vector<T> & a, const std::vector<T> & b)
+	// {
+	// 	std::vector<T> c(a);
+	// 	for (int i = 0; i != c.size(); i++)
+	// 		c[i]=a[i]-b[i];
+	// 	return c;
+	// }
+	friend std::vector<mytype> SmallRelax(const VectorMatrix<mytype> & A);
+	friend VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega);
 	friend	mytype	norm_C_cube(const VectorMatrix <mytype> &A);
 	friend	mytype	norm_C_oct(const VectorMatrix <mytype> &A);
-	friend	mytype	*diff_vector(mytype *a, mytype *b, int DIM);
-	friend	mytype	cube_vect_norm(mytype *x, int size);
+	friend std::vector<mytype> diff_vector(std::vector<mytype> a, std::vector<mytype> b, int DIM);
+	friend	mytype	cube_vect_norm(std::vector<mytype> x, int size);
 	friend	mytype	octah_vect_norm(mytype *x, int size);
 	friend	mytype	*cpy_vector(mytype *x, int size);
 	friend	mytype	*multi_vect_matr_C(const VectorMatrix <mytype> &A, mytype *x);
 	friend	mytype	*sum_vect(mytype *a, mytype *b, mytype *c, int size);
 	friend	mytype	*simp_iter(const VectorMatrix <mytype> &A, mytype *b, int flag);
-//	friend  void delim(VectorMatrix <T> &A, int k);
-//	friend void vych(VectorMatrix <T> &A, int k);
-//	friend void GaussRight(VectorMatrix<T> &A);
-//	friend void GaussLeft(VectorMatrix<T> &A);
-//	void	QR_find_x(VectorMatrix<T>& A);
-//	void	inverse_matrix(const VectorMatrix<T>& R, VectorMarix<T> & G);
-//	friend  double *find_x(const VectorMatrix<T>& A, double *b_);
-//	friend bool		degenerate_matrix(const VectorMatrix<T>& R);
-//	double *multi_vect(std::vector<double> I, const VectorMatrix  <double> & F);
+	friend std::vector<mytype> multi_vect(std::vector<double> I, const VectorMatrix  <double> & F);
 };
 //double *abs_diff_vector(T *a, T *b, int DIM);
