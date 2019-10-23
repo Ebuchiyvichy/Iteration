@@ -1,6 +1,6 @@
 #pragma once
 #include "MatrixClass.h"
-//кубическая норма матрицы С в методе простой итерации
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 mytype	norm_C_cube(const VectorMatrix <mytype> &A, mytype tau)
 {
 	mytype	norm = 0;
@@ -33,7 +33,7 @@ mytype	norm_C_cube(const VectorMatrix <mytype> &A, mytype tau)
 	std::cout << "Cube norm of matrix C = " << max << std::endl;
 	return (max);
 }
-//октаэдрическая норма матрицы С в методе простой итерации
+// //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 mytype	norm_C_oct(const VectorMatrix <mytype> &A, mytype tau)
 {
 	mytype	norm = 0;
@@ -66,18 +66,18 @@ mytype	norm_C_oct(const VectorMatrix <mytype> &A, mytype tau)
 	std::cout << "Octahedral norm of matrix C = " << max << std::endl;
 	return (max);
 }
-//разность векторов
-mytype	*diff_vector(mytype *a, mytype *b, int DIM)
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+std::vector<mytype> diff_vector(std::vector<mytype> a, std::vector<mytype> b, int DIM)
 {
-	mytype	*c = new mytype[DIM];
+	std::vector<mytype> c(DIM);
 
 	for (int i = 0; i < DIM; i++)
 		c[i] = a[i] - b[i];
 	return (c);
 }
 
-//кубическая норма вектора
-mytype	cube_vect_norm(mytype *x, int size)
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+mytype	cube_vect_norm(std::vector<mytype> x, int size)
 {
 	mytype	norm = 0;
 
@@ -86,8 +86,8 @@ mytype	cube_vect_norm(mytype *x, int size)
 			norm = fabs(x[i]);
 	return (norm);
 }
-//октаэдрическая норма вектора
-mytype	octah_vect_norm(mytype *x, int size)
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+mytype	octah_vect_norm(std::vector<mytype> x, int size)
 {
 	mytype	norm = 0;
 
@@ -95,15 +95,9 @@ mytype	octah_vect_norm(mytype *x, int size)
 		norm += fabs(x[i]);
 	return (norm);
 }
-//копирование вектора х0 в вектор х
-mytype	*cpy_vector(mytype *x, mytype *x0, int size)
-{
-	for (int i = 0; i < size; i++)
-		x[i] = x0[i];
-	return (x);
-}
-//сложение векторов а и b
-mytype	*sum_vect(mytype *a, mytype *b, mytype *c, int size)
+
+// //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ b
+std::vector<mytype> sum_vect(std::vector<mytype> a, std::vector<mytype> b, std::vector<mytype> c, int size)
 {
 	for (int i = 0; i < size; i++)
 		c[i] = a[i] + b[i];
@@ -111,18 +105,18 @@ mytype	*sum_vect(mytype *a, mytype *b, mytype *c, int size)
 }
 
 
-mytype	*cpy_vector(std::vector<mytype> x, int size, mytype tau)
+std::vector<mytype> cpy_vector(std::vector<mytype> x, int size, mytype tau)
 {
-	mytype	*tmp = new mytype[size];
+	std::vector<mytype> tmp(size);
 
 	for (int i = 0; i < size; i++)
 		tmp[i] = x[i] * tau;
 	return (tmp);
 }
 
-mytype	*multi_vect_matr_C(const VectorMatrix <mytype> &A, mytype *x, mytype tau)
+std::vector<mytype> multi_vect_matr_C(const VectorMatrix <mytype> &A, std::vector<mytype> x, mytype tau)
 {
-	mytype	*tmp = new mytype[A.count];
+	std::vector<mytype> tmp(A.count);
 
 	for (int j = 0; j < A.count; j++)
 	{
@@ -139,19 +133,19 @@ mytype	*multi_vect_matr_C(const VectorMatrix <mytype> &A, mytype *x, mytype tau)
 	return (tmp);
 }
 
-mytype	*diff_vect(mytype *a, std::vector <mytype> b, mytype *c, int size, mytype tau)
+std::vector<mytype> diff_vect(std::vector<mytype> a, std::vector <mytype> b, std::vector<mytype> c, int size, mytype tau)
 {
 	for (int i = 0; i < size; i++)
 		c[i] = b[i] * tau - a[i];
 	return (c);
 }
 
-mytype	*simp_iter(const VectorMatrix <mytype> &A, int flag)
+std::vector<mytype> simp_iter(const VectorMatrix <mytype> &A, int flag)
 {
-	mytype	*x;
-	mytype	*x0 = new mytype[A.count];
+	std::vector<mytype> x(A.count);
+	std::vector<mytype> x0(A.count);
 	mytype	norm;
-	mytype	*tmp;
+	std::vector<mytype> tmp(A.count);
 	mytype	tau = 0.03;
 
 	x = cpy_vector(A.rvalue, A.count, tau);
@@ -160,10 +154,9 @@ mytype	*simp_iter(const VectorMatrix <mytype> &A, int flag)
 		norm = norm_C_cube(A, tau);
 		do
 		{
-			x0 = cpy_vector(x0, x, A.count);
+			x0 = x;
 			tmp = multi_vect_matr_C(A, x0, tau);
 			x = diff_vect(tmp, A.rvalue, x, A.count, tau);
-			delete[] tmp;
 		} while (cube_vect_norm(diff_vector(x0, x, A.count), A.count) > ((1 - norm) / norm) * EPS);
 	}
 	else if (flag == 1)
@@ -172,13 +165,10 @@ mytype	*simp_iter(const VectorMatrix <mytype> &A, int flag)
 		norm = norm_C_oct(A, tau);
 		do
 		{
-			x0 = cpy_vector(x0, x, A.count);
+			x0 = x;
 			tmp = multi_vect_matr_C(A, x0, tau);
 			x = diff_vect(tmp, A.rvalue, x, A.count, tau);
-			delete[] tmp;
 		} while (octah_vect_norm(diff_vector(x0, x, A.count), A.count) > ((1 - norm) / norm) * EPS);
 	}
-	delete[] x0;
-
 	return (x);
 }

@@ -3,8 +3,14 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+<<<<<<< HEAD
+#include <vector>
+#include <cmath>
+typedef double mytype;
+=======
 #include <cmath>
 double	EPS = 10e-8;
+>>>>>>> a76e75838e30bcd6d8429795141cb69842d5a2ed
 
 class Matrix
 {
@@ -264,6 +270,81 @@ void reversematrixgauss(Matrix &A, Matrix &E)
 				E.value[E.mymap[i] - E.value + j] -= temp * E.value[E.mymap[k] - E.value + j];
 			}
 		}
+<<<<<<< HEAD
+		std::cout << std::endl;
+	}
+	// friend VectorMatrix VectorMatrix::operator *(VectorMatrix A, VectorMatrix B)
+	// {
+	//   VectorMatrix <T> C
+	//   for (int i = 0; i != A.count; i++)
+	//   {
+	//     T sum = 0;
+	//     for (int j = 0; j != A.count; i++)
+	//     {
+	//       for (inr k = 0; k != A.count; k++)
+	//       {
+	//         sum += A.matrix[i][j] * B.matrix[k][j];
+	//       }
+	//       C.matrix[][] = sum;
+	//     }
+	//   }
+	// }
+	// friend std::vector<T>& operator -(const std::vector<T> & a, const std::vector<T> & b)
+	// {
+	// 	std::vector<T> c(a);
+	// 	for (int i = 0; i != c.size(); i++)
+	// 		c[i]=a[i]-b[i];
+	// 	return c;
+	// }
+	void randombigmatrix()
+	{
+		count = 202;
+	  std::vector<std::vector <mytype>> value;
+
+	  for (int i = 0; i != 3; i++)
+	  {
+	    for (int j = 0; j != 202; j++)
+	    {
+	      if (i > 3)
+	        value[i].push_back(1);
+	      switch (i)
+	      {
+	        case 0: {
+						if (j == 0)
+							value[i][j] = 0;
+						else value[i][j] = 1;}
+	        case 1: value[i][j] = 4;
+	        case 2: value[i][j] = 1;
+	      }
+	    }
+	  }
+	  for (int i = 0; i != count; i++)
+	  {
+	    if (i > 3)
+	      rvalue.push_back();
+	    switch (i) {
+	      case 0: rvalue[i] = 6;
+	      case (count - 1): rvalue[i] = 9 - 3 * (count % 2);
+			}
+		}
+
+		value[2][201] = 0;
+	}
+	friend std::vector<mytype> SmallRelax(const VectorMatrix<mytype> & A);
+	friend VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega);
+	friend	mytype	norm_C_cube(const VectorMatrix <mytype> &A);
+	friend	mytype	norm_C_oct(const VectorMatrix <mytype> &A);
+	friend std::vector<mytype> diff_vector(std::vector<mytype> a, std::vector<mytype> b, int DIM);
+	friend	mytype	cube_vect_norm(std::vector<mytype> x, int size);
+	friend	mytype	octah_vect_norm(std::vector<mytype> x, int size);
+	friend	std::vector<mytype> cpy_vector(std::vector<mytype> x, int size);
+	friend	std::vector<mytype>	multi_vect_matr_C(const VectorMatrix <mytype> &A, std::vector<mytype> x);
+	friend	std::vector<mytype> sum_vect(std::vector<mytype> a, std::vector<mytype> b, std::vector<mytype> c, int size);
+	friend	std::vector<mytype> simp_iter(const VectorMatrix <mytype> &A, std::vector<mytype> b, int flag);
+	friend std::vector<mytype> multi_vect(std::vector<double> I, const VectorMatrix  <double> & F);
+};
+//double *abs_diff_vector(T *a, T *b, int DIM);
+=======
 	}
 
 	for (int k = A.size - 1; k > 0; k--)
@@ -279,3 +360,4 @@ void reversematrixgauss(Matrix &A, Matrix &E)
 		}
 	}
 }
+>>>>>>> a76e75838e30bcd6d8429795141cb69842d5a2ed
