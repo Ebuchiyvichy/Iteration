@@ -21,11 +21,11 @@ int	main()
   std::cout << std::setw(8) << x[i] << std::endl;
 	// std::cout << "Residual vector with cube norme = " << cube_vect_norm(diff_vector(x, multi_vect(A.rvalue, A), A.count), A.count) << std::endl;
 	 std::cout << std::endl;
-	 std::cout << "Relax for small one method:" << std::endl;
-	 x = SmallRelax(A);
- 	std::cout << "Vector X with cube norme:" << std::endl;
- 	for (int i = 0; i < A.count; i++)
-   std::cout << std::setw(8) << x[i] << std::endl;
+	//  std::cout << "Relax for small one method:" << std::endl;
+	//  x = SmallRelax(A);
+ 	// std::cout << "Vector X with cube norme:" << std::endl;
+ 	// for (int i = 0; i < A.count; i++)
+  //  std::cout << std::setw(8) << x[i] << std::endl;
 	//x = simp_iter(A, 1);
 	//std::cout << "Vector X with octahedral norme:" << std::endl;
 	//for (int i = 0; i < A.count; i++)

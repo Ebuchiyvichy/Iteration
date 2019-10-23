@@ -1,26 +1,77 @@
 #include "Jacoby.h"
 
-VectorMatrix<mytype>::VectorMatrix<typename> randombigmatrix()
+VectorMatrix<mytype> countbigmatrix(const VectorMatrix<mytype> & A, mytype omega)
 {
-  count = 204;
-  std::vector<std::vector <mytype>> value;
+  for (int k = 0; k != A.count; k++)
+  {
+    std::vector<mytype> x(A.count);
+    std::vector<mytype> p(A.count);
+    x[k] = 1;
+    p[k] = 1;
+    for (int i = 0; i != A.count; i++)
+    {
+      switch (i) {
+        case 0: x[i] = (-1)*omega*p[i+1] *A.value[i][2]/A.value[i][1] +(1-omega) * x[i];
+        case 201: x[i] = (-1)*omega*x[i-1] *A.value[i][0]/A.value[i][1]+(1-omega) * x[i];
+        default:
+            x[i] = ((-1)*p[i+1]*A.value[i][2] - x[i-1]*A.value[i][0])/A.value[i][1] + (1-omega) * x[i];
+          }
 
-  for (int i = 0; i != 3; i++)
-  {
-    for (int j = 0; j != count; j++)
-  {
-    if (i > 3)    
+    }
   }
 }
- }
+
+std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A )
+{
+  std::vector<mytype> x(A.rvalue);
+  std::vector<mytype> p(A.rvalue);
+  double omega = 0.01;
+  //start iteration process
+  do
+  {
+    for (int i = 0; i != A.count; i++)
+      p[i] = x[i];
+    for (int i = 0; i != A.count; i++)
+    {
+      switch (i) {
+        case 0: x[i] = ((-1)*omega*p[i+1] *A.value[i][2]+omega*A.rvalue[i])/A.value[i][1] +(1-omega) * p[i];
+        case 201: x[i] = ((-1)*omega*x[i-1] *A.value[i][0]+ omega*A.rvalue[i])/A.value[i][1] +(1-omega) * p[i];
+        default:
+            x[i] = ((-1)*omega*p[i+1]*A.value[i][2] - omega*x[i-1]*A.value[i][0]+ omega * A.rvalue[i])/A.value[i][1] + (1-omega) * p[i];
+          }
+    }
+  }
+  while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_cube(C)) / norm_cube(C)) * EPS);
+  return x;
+}
+std::vector<mytype> BigZeldel(const VectorMatrix<mytype> & A)
+{
+  std::vector<mytype> x(A.rvalue);
+  std::vector<mytype> p(A.rvalue);
+  //start iteration process
+  do
+  {
+    for (int i = 0; i != A.count; i++)
+      p[i] = x[i];
+    for (int i = 0; i != A.count; i++)
+    {
+      switch (i) {
+        case 0: x[i] = ((-1)*p[i+1] *A.value[i][2]+A.rvalue[i])/A.value[i][1];
+        case 201: x[i] = ((-1)*x[i-1] *A.value[i][0]+A.rvalue[i])/A.value[i][1];
+        default:
+            x[i] = ((-1)*p[i-1]*A.value[i][2] - x[i-1]*A.value[i][0]+ A.rvalue[i])/A.value[i][1];
+          }
+    }
+  }
+  while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_cube(C)) / norm_cube(C)) * EPS);
+  return x;
+}
 
 std::vector<mytype> SmallZeydel(const VectorMatrix<mytype> & A)
 {
   std::vector<mytype> x(A.rvalue);
   std::vector<mytype> p(A.rvalue);
   VectorMatrix<mytype> C(A.count);
-  std::vector<mytype> c(A.count);
-
   //start iteration process
   do
   {
@@ -57,58 +108,57 @@ VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega)
     std::vector<mytype> p(A.count);
     x[k] = 1;
     p[k] = 1;
+    // for (int i = 0; i != A.count; i++)
+    //   p[i] = x[i];
     for (int i = 0; i != A.count; i++)
     {
-      for (int j = 0; j!= A.count; j++)
-        p[j] = x[j];
-      x[i] = A.rvalue[i];
-      for (int j = 0; j < A.count; j++)
-      {
-        if (i != j)
-          x[i] = x[i] - A.value[i][j]*x[j];
-      }
-      x[i] /= A.value[i][i];
-      x[i] = omega * x[i] + (1 - omega)*p[i];
+      double sum = 0;
+      for (int j = 0; j < i; j++)
+        sum +=(omega * A.value[i][j] * x[j])/A.value[i][i];
+
+      for (int j = i + 1; j != A.count; j++)
+        sum += (omega * A.value[i][j] * p[j])/A.value[i][i];
+      x[i]= (1 - omega) * p[i] - sum;
     }
-    for (int j = 0; j != A.count; j++)
+    for (int i = 0; i != A.count; i++)
     {
-      C.value[j][k] = x[j];
+      C.value[i][k] = x[i];
     }
   }
-  C.print();
-  return C;
+  return (C);
 }
 
  std::vector<mytype> SmallRelax(const VectorMatrix<mytype> & A)
  {
-   double omega = 2;
+   double omega = 0;
    std::vector<mytype> x(A.rvalue);
    std::vector<mytype> p(A.rvalue);
-   VectorMatrix<mytype> C(countmatrix(A, omega));
+   //VectorMatrix<mytype> C(countmatrix(A, omega));
    do
    {
-     int n =0;
-     while (norm_cube(countmatrix(A, omega)) > 1)
+     int n = 0;
+     while (norm_cube(countmatrix(A, omega)) >= 1)
      {
+       std::cout << norm_cube(countmatrix(A, omega)) << "\n";
        n++;
-       omega -= 0.01;
+       omega += 0.01;
        std::cout << omega << std::endl;
-       if (n == 20)
-       {
-         std::cout << norm_cube(countmatrix(A, omega));
-         break ;
-       }
      }
+     std::cout << norm_cube(countmatrix(A, omega)) << "\n";
+     std::cout << "Meow\n";
+
      for (int i = 0; i != A.count; i++)
        p[i] = x[i];
      for (int i = 0; i != A.count; i++)
      {
       double sum = 0;
       for (int j = 0; j < i; j++)
-        sum -=(omega*A.value[i][j]*x[j])/A.value[i][i];
+        sum -=(omega * A.value[i][j] * x[j])/A.value[i][i];
+      for (int j = i + 1; j != A.count; j++)
+        sum -= (omega * A.value[i][j] * p[j])/A.value[i][i];
       sum += ((1-omega) * p[i]);
       x[i]= ((omega*A.rvalue[i])/A.value[i][i]+sum);
      }
-   } while (cube_vect_norm(diff_vector(x,p, A.count), A.count) > ((1 - norm_cube(countmatrix(C, omega)) / norm_cube(countmatrix(C, omega))) * EPS));
+   } while (cube_vect_norm(diff_vector(x,p, A.count), A.count) > ((1 - norm_cube(countmatrix(A, omega)) / norm_cube(countmatrix(A, omega))) * EPS));
    return x;
  }
