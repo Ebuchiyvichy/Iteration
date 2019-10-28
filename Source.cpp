@@ -9,10 +9,6 @@ int	main()
 //	file >> size;
 	VectorMatrix <mytype>	A(4);
 	std::vector<mytype> x;
-
-	A.init();
-	std::cout << "Matrix A:" << std::endl;
-	A.print();
 	std::cout << "Zeldel for small one method:" << std::endl;
 	// std::cout << "Simple iteration method:" << std::endl;
 	x = SmallZeydel(A);
@@ -44,5 +40,6 @@ int	main()
 	delete[] x;*/
 
 //	system("pause");
+
 	return (0);
 }

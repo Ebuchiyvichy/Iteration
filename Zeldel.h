@@ -1,5 +1,23 @@
 #include "Jacoby.h"
 
+void printC(const VectorMatrix& C)
+{
+  for (int i = 0; i != A.count; i++)
+  {
+    for (int j = 0; j != 3; j++)
+    {
+      for (ink k = 0; k != i; k++ )
+        std::cout << "0 ";
+      if (C.value[j][i] != 0)
+        std::cout << C.value[j][i] << " ";
+      for (int k = i; k != A.count; k++)
+        std::cout << "0 ";
+      std::cout << '\n';
+
+    }
+  }
+}
+
 VectorMatrix<mytype> countbigmatrix(const VectorMatrix<mytype> & A, mytype omega)
 {
   for (int k = 0; k != A.count; k++)
@@ -16,9 +34,18 @@ VectorMatrix<mytype> countbigmatrix(const VectorMatrix<mytype> & A, mytype omega
         default:
             x[i] = ((-1)*p[i+1]*A.value[i][2] - x[i-1]*A.value[i][0])/A.value[i][1] + (1-omega) * x[i];
           }
-
+    }
+    for (int i = 0; i != A.count; i++)
+    {
+      if (x[i] != 0)
+      {
+        for (int l = 0; l != 3; l++)
+          C.value[i][l]=x[i];
+        break ;
+      }
     }
   }
+  return C;
 }
 
 std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A )
@@ -44,6 +71,8 @@ std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A )
   while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_cube(C)) / norm_cube(C)) * EPS);
   return x;
 }
+
+
 std::vector<mytype> BigZeldel(const VectorMatrix<mytype> & A)
 {
   std::vector<mytype> x(A.rvalue);
@@ -141,7 +170,6 @@ VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega)
      {
        std::cout << norm_cube(countmatrix(A, omega)) << "\n";
        n++;
-       omega += 0.01;
        std::cout << omega << std::endl;
      }
      std::cout << norm_cube(countmatrix(A, omega)) << "\n";
