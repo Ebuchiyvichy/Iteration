@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
+#include <cmath>
 typedef double mytype;
 
 mytype	EPS = 10e-3;
@@ -26,24 +27,49 @@ public:
 	~VectorMatrix()
 	{
 	}
-	void init()
-	{
-		std::ifstream file;
-		file.open("matrix.txt");
 
+void VectorMatrixC(int size)
+	{
+		std::cout <<"workworkwork";
+		count = size;
+		for (int i = 0; i != 3; i++)
+		{
+			value.push_back(std::vector<mytype>(count));
+		}
+		std::cout <<"workworkwork";
 		for (int i = 0; i != count; i++)
 		{
-			for (int j = 0; j <= count; j++)
+			for (int j = 0; j != 3; j++)
 			{
-				T numb;
-				file >> numb;
-				if (j != count)
-					value[i][j] = numb;
-				else
-					rvalue.push_back(numb);
+				switch (j) {
+					case 0:
+					{
+						switch (i) {
+							case 0: value[i][j] = 0;
+							default: value[i][j]= 1;
+						}
+					}
+					case 1:
+					{
+						switch (i) {
+							case 0:
+								value[i][j] = 6;
+							case 201:
+								value[i][j] = 9 - 3 * (202 % 2);
+							default:
+								value[i][j] = 10 -2 * (i % 2);
+						}
+					}
+					case 2:
+					{
+						switch (i) {
+							case 201: value[i][j] = 0;
+							default: value[i][j]= 1;
+						}
+					}
+				}
 			}
 		}
-		file.close();
 	}
 
 	void cpy(const VectorMatrix <T> &A)
@@ -112,7 +138,6 @@ public:
 	//     }
 	//   }
 	// }
-
 	friend	mytype	norm_C_cube(const VectorMatrix <mytype> &A);
 	friend	mytype	norm_C_oct(const VectorMatrix <mytype> &A);
 	friend	std::vector<mytype>	diff_vector(std::vector<mytype>a, std::vector<mytype>b, int DIM);

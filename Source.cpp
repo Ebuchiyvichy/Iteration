@@ -3,7 +3,10 @@
 
 int	main()
 {
-
+	VectorMatrix <mytype> C(0);
+	C.VectorMatrixC(202);
+	//printC(C);
+//	std::cout << C.value[0][2] << '\n';
 //	std::ifstream file;
 //	file.open("matrixexample.txt");
 //	int	size;
