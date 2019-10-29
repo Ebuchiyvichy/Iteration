@@ -28,45 +28,45 @@ public:
 	{
 	}
 
-void VectorMatrixC(int size)
+	void VectorMatrixC(int size)
 	{
-		std::cout <<"workworkwork";
+		std::cout << "workworkwork";
 		count = size;
 		for (int i = 0; i != 3; i++)
 		{
 			value.push_back(std::vector<mytype>(count));
 		}
-		std::cout <<"workworkwork";
+		std::cout << "workworkwork";
 		for (int i = 0; i != count; i++)
 		{
 			for (int j = 0; j != 3; j++)
 			{
 				switch (j) {
+				case 0:
+				{
+					switch (i) {
+					case 0: value[j][i] = 0;
+					default: value[j][i] = 1;//проблемс
+					}
+				}
+				case 1:
+				{
+					switch (i) {
 					case 0:
-					{
-						switch (i) {
-							case 0: value[i][j] = 0;
-							default: value[i][j]= 1;
-						}
+						value[j][i] = 6;
+					case 201:
+						value[j][i] = 9 - 3 * (202 % 2);
+					default:
+						value[j][i] = 10 - 2 * (i % 2);
 					}
-					case 1:
-					{
-						switch (i) {
-							case 0:
-								value[i][j] = 6;
-							case 201:
-								value[i][j] = 9 - 3 * (202 % 2);
-							default:
-								value[i][j] = 10 -2 * (i % 2);
-						}
+				}
+				case 2:
+				{
+					switch (i) {
+					case 201: value[j][i] = 0;
+					default: value[j][i] = 1;
 					}
-					case 2:
-					{
-						switch (i) {
-							case 201: value[i][j] = 0;
-							default: value[i][j]= 1;
-						}
-					}
+				}
 				}
 			}
 		}
@@ -149,19 +149,19 @@ void VectorMatrixC(int size)
 	friend	std::vector<mytype> simp_iter(const VectorMatrix <mytype> &A, std::vector<mytype>b, int flag);
 	friend void printC(const VectorMatrix& C);
 	friend VectorMatrix<mytype> countbigmatrix(const VectorMatrix<mytype> & A, mytype omega);
-	friend std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A );
+	friend std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A);
 	friend std::vector<mytype> BigZeldel(const VectorMatrix<mytype> & A);
 	friend std::vector<mytype> SmallZeydel(const VectorMatrix<mytype> & A);
 	friend VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega);
 	friend std::vector<mytype> SmallRelax(const VectorMatrix<mytype> & A);
-//	friend  void delim(VectorMatrix <T> &A, int k);
-//	friend void vych(VectorMatrix <T> &A, int k);
-//	friend void GaussRight(VectorMatrix<T> &A);
-//	friend void GaussLeft(VectorMatrix<T> &A);
-//	void	QR_find_x(VectorMatrix<T>& A);
-//	void	inverse_matrix(const VectorMatrix<T>& R, VectorMarix<T> & G);
-//	friend  double *find_x(const VectorMatrix<T>& A, double *b_);
-//	friend bool		degenerate_matrix(const VectorMatrix<T>& R);
-//	double *multi_vect(std::vector<double> I, const VectorMatrix  <double> & F);
+	//	friend  void delim(VectorMatrix <T> &A, int k);
+	//	friend void vych(VectorMatrix <T> &A, int k);
+	//	friend void GaussRight(VectorMatrix<T> &A);
+	//	friend void GaussLeft(VectorMatrix<T> &A);
+	//	void	QR_find_x(VectorMatrix<T>& A);
+	//	void	inverse_matrix(const VectorMatrix<T>& R, VectorMarix<T> & G);
+	//	friend  double *find_x(const VectorMatrix<T>& A, double *b_);
+	//	friend bool		degenerate_matrix(const VectorMatrix<T>& R);
+	//	double *multi_vect(std::vector<double> I, const VectorMatrix  <double> & F);
 };
 //double *abs_diff_vector(T *a, T *b, int DIM)
