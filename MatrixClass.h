@@ -30,46 +30,57 @@ public:
 
 	void VectorMatrixC(int size)
 	{
-		std::cout << "workworkwork";
 		count = size;
 		for (int i = 0; i != 3; i++)
 		{
 			value.push_back(std::vector<mytype>(count));
 		}
-		std::cout << "workworkwork";
 		for (int i = 0; i != count; i++)
 		{
 			for (int j = 0; j != 3; j++)
 			{
-				switch (j) {
-				case 0:
-				{
-					switch (i) {
-					case 0: value[j][i] = 0;
-					default: value[j][i] = 1;//проблемс
-					}
+				if (j == 0) {
+					if (i == 0)
+						value[j][i] = 0;
+					else
+						value[j][i] = 1;
 				}
-				case 1:
-				{
-					switch (i) {
-					case 0:
+				else if (j == 1) {
+					if (i == 0)
 						value[j][i] = 6;
-					case 201:
+					else if (i == 201)
 						value[j][i] = 9 - 3 * (202 % 2);
-					default:
+					else
 						value[j][i] = 10 - 2 * (i % 2);
-					}
 				}
-				case 2:
-				{
-					switch (i) {
-					case 201: value[j][i] = 0;
-					default: value[j][i] = 1;
-					}
-				}
+				else if (j == 2) {
+					if (i == 201)
+						value[j][i] = 0;
+					else
+						value[j][i] = 1;
 				}
 			}
 		}
+	}
+
+	void init()
+	{
+		std::ifstream file;
+		file.open("matrix.txt");
+
+		for (int i = 0; i != count; i++)
+		{
+			for (int j = 0; j <= count; j++)
+			{
+				T numb;
+				file >> numb;
+				if (j != count)
+					value[i][j] = numb;
+				else
+					rvalue.push_back(numb);
+			}
+		}
+		file.close();
 	}
 
 	void cpy(const VectorMatrix <T> &A)
@@ -154,6 +165,8 @@ public:
 	friend std::vector<mytype> SmallZeydel(const VectorMatrix<mytype> & A);
 	friend VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega);
 	friend std::vector<mytype> SmallRelax(const VectorMatrix<mytype> & A);
+	friend mytype norm_C_big_oct(const VectorMatrix <mytype> &C);
+	mytype norm_C_big_cube(const VectorMatrix<mytype> &C);
 	//	friend  void delim(VectorMatrix <T> &A, int k);
 	//	friend void vych(VectorMatrix <T> &A, int k);
 	//	friend void GaussRight(VectorMatrix<T> &A);

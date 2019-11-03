@@ -3,47 +3,93 @@
 
 int	main()
 {
-	VectorMatrix <mytype> C(0);
-	C.VectorMatrixC(202);
-	//printC(C);
-//	std::cout << C.value[0][2] << '\n';
-//	std::ifstream file;
-//	file.open("matrixexample.txt");
-//	int	size;
-//	file >> size;
-	// VectorMatrix <mytype>	A(4);
-	// std::vector<mytype> x;
-	// std::cout << "Zeldel for small one method:" << std::endl;
-	// // std::cout << "Simple iteration method:" << std::endl;
-	// x = SmallZeydel(A);
-	// std::cout << "Vector X with cube norme:" << std::endl;
-	// for (int i = 0; i < A.count; i++)
-  // std::cout << std::setw(8) << x[i] << std::endl;
-	// // std::cout << "Residual vector with cube norme = " << cube_vect_norm(diff_vector(x, multi_vect(A.rvalue, A), A.count), A.count) << std::endl;
-	//  std::cout << std::endl;
-	//  std::cout << "Relax for small one method:" << std::endl;
-	//  x = SmallRelax(A);
- 	// std::cout << "Vector X with cube norme:" << std::endl;
- 	// for (int i = 0; i < A.count; i++)
-  //  std::cout << std::setw(8) << x[i] << std::endl;
-	//x = simp_iter(A, 1);
-	//std::cout << "Vector X with octahedral norme:" << std::endl;
-	//for (int i = 0; i < A.count; i++)
-	//	std::cout << std::setw(8) << x[i] << std::endl;
-	//delete[] x;
-	// std::cout << "Jacoby method:" << std::endl;
-	// x = jacoby(A, 0);
-	// std::cout << "Vector X with cube norme:" << std::endl;
-	// for (int i = 0; i < A.count; i++)
-	// 	std::cout << std::setw(8) << x[i] << std::endl;
-	/*std::cout << "Jacoby method:" << std::endl;
-	x = jacoby(A, 1);
+
+	VectorMatrix <mytype>	A(4);
+	A.init();
+	A.print();
+	std::vector<mytype> x;
+	//smallzeidel
+	std::cout << "Zeldel for small one method:" << std::endl;
+	x = SmallZeydel(A, 0);
+	std::cout << "Vector X with cube norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+	std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << "Residual vector with cube norme = " << cube_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+/*	x = SmallZeydel(A, 1);
 	std::cout << "Vector X with octahedral norme:" << std::endl;
 	for (int i = 0; i < A.count; i++)
 		std::cout << std::setw(8) << x[i] << std::endl;
-	delete[] x;*/
+	std::cout << "Residual vector with octahedral norme = " << octah_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;*/
 
-//	system("pause");
+	
+	//bigZeidel
+/*	std::cout << "Zeldel for big one method:" << std::endl;
+	x = BigZeydel(A);
+	std::cout << "Vector X with cube norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+	std::cout << std::setw(8) << x[i] << std::endl;*/
+
+	//relax
+	std::cout << std::endl;
+	std::cout << "Relax for small one method:" << std::endl;
+	x = SmallRelax(A, 0);
+	std::cout << "Vector X with cube norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+	std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << "Residual vector with cube norme = " << cube_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+/*	x = SmallRelax(A, 1);
+	std::cout << "Vector X with octahedral norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+		std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << "Residual vector with octahedral norme = " << octah_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;*/
+
+	//simple_iter
+/*	std::cout << "Simple iteration method:" << std::endl;
+	x = simp_iter(A, 0);
+	std::cout << "Vector X with cube norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+		std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << "Residual vector with cube norme = " << cube_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	x = simp_iter(A, 1);
+	std::cout << "Vector X with octahedral norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+		std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << "Residual vector with octahedral norme = " << octah_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;*/
+
+	//jacoby
+/*	std::cout << "Jacoby method:" << std::endl;
+	x = jacoby(A, 0);
+	std::cout << "Vector X with cube norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+	std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << "Residual vector with cube norme = " << cube_vect_norm(diff_vector(A.rvalue, multi_vect(x, A), A.count), A.count) << std::endl;
+	std::cout << "Jacoby method:" << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	x = jacoby(A, 1);
+	std::cout << "Vector X with octahedral norme:" << std::endl;
+	for (int i = 0; i < A.count; i++)
+	std::cout << std::setw(8) << x[i] << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;*/
+	
+	system("pause");
 
 	return (0);
 }
