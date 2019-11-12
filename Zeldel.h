@@ -1,133 +1,160 @@
 #include "Jacoby.h"
 
-void printC(const VectorMatrix<mytype> &C)
+mytype Lfunc(const VectorMatrix<mytype> &A, bool flag)
 {
-	for (int j = 0; j != 3; j++)
+	mytype	norm = 0;
+	mytype	max = 0;
+	//true if small matrix, false if else
+	if (flag == true)
 	{
-		for (int i = 0; i != C.count; i++)
-			std::cout << C.value[j][i] << " ";
-		std::cout << std::endl;
+		for (int i = 0; i < A.count; i++)
+		{
+			norm = 0;
+			for (int j = i+1; j < A.count; j++)
+				norm += fabs(A.value[i][j]);
+			if (norm > max)
+				max = norm;
+		}
 	}
+	else
+	{
+		for (int i = 0; i != A.count; i++)
+		{
+			if (fabs(A.value[2][i]) > max)
+				max = fabs(A.value[2][i]);
+		}
+	}
+	return(max);
+}
+mytype Ufunc(const VectorMatrix<mytype> &A, bool flag)
+{
+	mytype	norm = 0;
+	mytype	max = 0;
+	//true if small matrix, false if else
+	if (flag == true)
+	{
+		for (int i = 0; i < A.count; i++)
+		{
+			norm = 0;
+			for (int j = 0; j < i; j++)
+				norm += fabs(A.value[i][j]);
+			if (norm > max)
+				max = norm;
+		}
+	}
+	else
+	{
+		for(int i = 0; i != A.count; i++)
+		{
+			if (fabs(A.value[0][i]) > max)
+				max = fabs(A.value[0][i]);
+		}
+	}
+	return(max);
 }
 
-//mytype norm_C_big_cube(const VectorMatrix<mytype> &C)
-//{
-//	mytype	norm = 0;
-//	mytype	max = 0;
-//	for (int i = 0; i != C.count; i++)
-//	{
-//		norm = 0;
-//		for (int j = 0; j != 3; j++)
-//			norm += fabs(C.value[j][i]);
-//		if (norm > max)
-//			max = norm;
-//	}
-//	return(max);
-//}
+mytype norm_C_big_cube(const VectorMatrix<mytype> &C)
+{
+	mytype	norm = 0;
+	mytype	max = 0;
+	for (int i = 0; i != C.count; i++)
+	{
+		norm = 0;
+		for (int j = 0; j != 3; j++)
+			norm += fabs(C.value[j][i]);
+		if (norm > max)
+			max = norm;
+	}
+	return(max);
+}
 
-//mytype norm_C_big_oct(const std::vector<std::vector<mytype>> &C)
-//{
-//	mytype	norm = 0;
-//	mytype	max = 0;
-//
-//	for (int i = 0; i != C.count; i++)
-//	{
-//		norm = 0;
-//		if (i == 0)
-//			norm = fabs(C.value[1][i] + C.value[2][i + 1]);
-//		else if (i == 201)
-//			norm = fabs(C.value[1][i] + C.value[0][i - 1]);
-//		else
-//			norm = fabs(C.value[1][i] + C.value[0][i - 1] + C.value[2][i + 1]);
-//		if (norm > max)
-//			max = norm;
-//	}
-//	return(max);
-//}
+mytype norm_C_big_oct(const VectorMatrix<mytype> &C)
+{
+	mytype	norm = 0;
+	mytype	max = 0;
 
- //std::vector<std::vector<mytype>> countbigmatrix(const VectorMatrix<mytype> & A, mytype omega)
- //{
-	// std::vector<std::vector<mytype>>	C;
+	for (int i = 0; i != C.count; i++)
+	{
+		norm = 0;
+		if (i == 0)
+			norm = fabs(C.value[1][i] + C.value[2][i + 1]);
+		else if (i == 201)
+			norm = fabs(C.value[1][i] + C.value[0][i - 1]);
+		else
+			norm = fabs(C.value[1][i] + C.value[0][i - 1] + C.value[2][i + 1]);
+		if (norm > max)
+			max = norm;
+	}
+	return(max);
+}
 
- //  for (int k = 0; k != A.count; k++)
- //  {
- //    std::vector<mytype> x(A.count);
- //    std::vector<mytype> p(A.count);
- //    x[k] = 1;
- //    p[k] = 1;
- //    for (int i = 0; i != A.count; i++)
- //    {
- //      switch (i) {
- //        case 0: x[i] = (-1)*omega*p[i+1] *A.value[i][2]/A.value[i][1] +(1-omega) * x[i];
- //        case 201: x[i] = (-1)*omega*x[i-1] *A.value[i][0]/A.value[i][1]+(1-omega) * x[i];
- //        default:
- //            x[i] = ((-1)*p[i+1]*A.value[i][2] - x[i-1]*A.value[i][0])/A.value[i][1] + (1-omega) * x[i];
- //          }
- //    }
- //    for (int i = 0; i != A.count; i++)
- //    {
- //      if (x[i] != 0)
- //      {
- //        for (int l = 0; l != 3; l++)
- //          C.value[i][l]=x[i];
- //        break ;
- //      }
- //    }
- //  }
- //  return C;
- //}
-
-// std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A )
-// {
-//   std::vector<mytype> x(A.rvalue);
-//   std::vector<mytype> p(A.rvalue);
-//   double omega = 0.01;
-//   //start iteration process
-//   do
-//   {
-//     for (int i = 0; i != A.count; i++)
-//       p[i] = x[i];
-//     for (int i = 0; i != A.count; i++)
-//     {
-//       switch (i) {
-//         case 0: x[i] = ((-1)*omega*p[i+1] *A.value[i][2]+omega*A.rvalue[i])/A.value[i][1] +(1-omega) * p[i];
-//         case 201: x[i] = ((-1)*omega*x[i-1] *A.value[i][0]+ omega*A.rvalue[i])/A.value[i][1] +(1-omega) * p[i];
-//         default:
-//             x[i] = ((-1)*omega*p[i+1]*A.value[i][2] - omega*x[i-1]*A.value[i][0]+ omega * A.rvalue[i])/A.value[i][1] + (1-omega) * p[i];
-//           }
-//     }
-//   }
-//   while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_cube(C)) / norm_cube(C)) * EPS);
-//   return x;
-// }
+std::vector<mytype> BigRelax(const VectorMatrix<mytype> &A )
+{
+  std::vector<mytype> x(A.rvalue);
+  std::vector<mytype> p(A.rvalue);
+	std::cout << "cool!\n";
+  mytype omega = searchbigomeganorm(A);
+  //start iteration process
+  do
+  {
+    for (int i = 0; i != A.count; i++)
+      p[i] = x[i];
+    for (int i = 0; i != A.count; i++)
+    {
+      if (i == 0)
+        x[i] = ((-1)*omega*p[i+1] *A.value[2][i]+omega*A.rvalue[i])/A.value[1][i] +(1-omega) * p[i];
+      else if ( i == 201)
+				x[i] = ((-1)*omega*x[i-1] *A.value[0][i]+ omega*A.rvalue[i])/A.value[1][i] +(1-omega) * p[i];
+      else
+				x[i] = ((-1)*omega*p[i+1]*A.value[2][i] - omega*x[i-1]*A.value[0][i]+ omega * A.rvalue[i])/A.value[1][i] + (1-omega) * p[i];
+      }
+			std::cout << "work fine\n";
+    }
+	//while (cube_vect_norm(diff_vector(x, p, A.count), A.count) > EPS);
+  while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_cube(countbigmatrix(A, omega))) /  norm_cube(countbigmatrix(A, omega)) * EPS));
+  return x;
+}
 
 
- //std::vector<mytype> BigZeydel(const VectorMatrix<mytype> & A)
- //{
- //  std::vector<mytype> x(A.rvalue);
- //  std::vector<mytype> p(A.rvalue);
- //  //start iteration process
- //  do
- //  {
- //    for (int i = 0; i != A.count; i++)
- //      p[i] = x[i];
- //    for (int i = 0; i != A.count; i++)
- //    {
- //      switch (i)
-	//   {
- //        case 0: 
-	//		 x[i] = ((-1)*p[i+1] *A.value[i][2]+A.rvalue[i])/A.value[i][1];
- //        case 201:
-	//		 x[i] = ((-1)*x[i-1] *A.value[i][0]+A.rvalue[i])/A.value[i][1];
- //        default:
- //            x[i] = ((-1)*p[i-1]*A.value[i][2] - x[i-1]*A.value[i][0]+ A.rvalue[i])/A.value[i][1];
- //      }
- //    }
- //  }
- // // while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_C_big_cube(C)) / norm_cube(C)) * EPS);
- //  while (cube_vect_norm(diff_vector(x, p, A.count), A.count) > EPS);
- //  return x;
- //}
+ std::vector<mytype> BigZeydel(const VectorMatrix<mytype> & A)
+ {
+  std::vector<mytype> x(A.rvalue);
+  std::vector<mytype> p(A.rvalue);
+	VectorMatrix<mytype> C(0);
+	C.VectorMatrixC(202);
+	for (int i = 0; i != A.count; i++)
+	{
+		C.value[1][i] = 0;
+	}
+  //start iteration process
+  do
+  {
+		for (int i = 0; i != A.count; i++)
+			p[i] = x[i];
+		for (int i = 0; i != A.count; i++)
+		{
+			if (i == 0)
+			{
+				x[i] = ((-1) * p[i+1] * A.value[2][i] + A.rvalue[i])/A.value[1][i];
+				C.value[2][i] = A.value[2][i]/A.value[1][i];
+			}
+			else if (i == 201)
+			{
+				x[i] = ((-1) * x[i-1] * A.value[0][i] + A.rvalue[i])/A.value[1][i];
+				C.value[0][i] = A.value[0][i]/A.value[1][i];
+			}
+			else
+			{
+				x[i] = ((-1) * x[i-1] * A.value[0][i] - p[i+1] * A.value[2][i] + A.rvalue[i])/A.value[1][i];
+				C.value[0][i] = A.value[0][i]/A.value[1][i];
+				C.value[2][i] = A.value[2][i]/A.value[1][i];
+			}
+		}
+  }
+ //while (cube_vect_norm(diff_vector(x,p,A.count), A.count) > ((1 - norm_C_big_cube(C)) / norm_C_big_cube(C)) * EPS);
+  while (cube_vect_norm(diff_vector(x, p, A.count), A.count) > EPS);
+  return x;
+ }
 
 std::vector<mytype> SmallZeydel(const VectorMatrix<mytype> & A, int flag)
 {
@@ -165,6 +192,7 @@ std::vector<mytype> SmallZeydel(const VectorMatrix<mytype> & A, int flag)
 	//	} while (cube_vect_norm(diff_vector(x, p, A.count), A.count) > 10 * EPS);
 	//	} while (cube_vect_norm(diff_vector(multi_vect(x, A), A.rvalue, A.count), A.count) > EPS);
 		std::cout << "Cube norme of matrix C = " << norm_cube(C) << std::endl;
+		C.print();
 	}
 	else if (flag == 1)
 	{
@@ -197,6 +225,102 @@ std::vector<mytype> SmallZeydel(const VectorMatrix<mytype> & A, int flag)
 	return x;
 }
 
+mytype searchbigomeganorm(const VectorMatrix<mytype> &A)
+{
+	mytype min = 1;
+	mytype prednorm = 1;;
+	mytype omega = 0.05;
+	double h = 0.05;
+	while(omega < 2){
+		std::cout << "ok\n";
+		if (norm_cube(countbigmatrix(A, omega)) < min )
+		{
+			std::cout << min;
+			min = norm_cube(countbigmatrix(A, omega));
+	 }
+		if ((norm_cube(countmatrix(A, omega)) > min) && (prednorm - min < 0.01))
+		{
+			std::cout << "count start check\n";
+			break;
+		}
+		prednorm = norm_cube(countbigmatrix(A, omega));
+		omega += h;
+	}
+	omega -= h;
+	std::cout << "Norm matrix C: " << norm_cube(countmatrix(A, omega)) << std::endl;
+	std::cout << "Omega opt: " << omega << std::endl;
+	return(omega);
+}
+
+mytype searchbigomegaiter(VectorMatrix<mytype> &A)
+{
+	mytype omega = 0.05;
+	double h = 0.05;
+	int miniter;
+	mytype omegaopt;
+	while(omega < 2){
+		int iter = 0;
+		std::vector<mytype> x(A.rvalue);
+	  std::vector<mytype> p(A.rvalue);
+	  //start iteration process
+	  do
+	  {
+			iter++;
+	    for (int i = 0; i != A.count; i++)
+	      p[i] = x[i];
+	    for (int i = 0; i != A.count; i++)
+	    {
+	      if (i == 0)
+	        x[i] = ((-1)*omega*p[i+1] *A.value[2][i]+omega*A.rvalue[i])/A.value[1][i] +(1-omega) * p[i];
+	      else if ( i == 201)
+					x[i] = ((-1)*omega*x[i-1] *A.value[0][i]+ omega*A.rvalue[i])/A.value[1][i] +(1-omega) * p[i];
+	      else
+					x[i] = ((-1)*omega*p[i+1]*A.value[2][i] - omega*x[i-1]*A.value[0][i]+ omega * A.rvalue[i])/A.value[1][i] + (1-omega) * p[i];
+	      }
+	    }
+		while (cube_vect_norm(diff_vector(x, p, A.count), A.count) > EPS);
+		if (omega == 0.05)
+			miniter = iter;
+		if (iter < miniter)
+		{
+			miniter = iter;
+			omegaopt = omega;
+		}
+	}
+	std::cout << "Count of ineteration: " << miniter <<"\n";
+	std::cout << "Omega opt: " << omegaopt << "\n";
+	return (omegaopt);
+}
+
+VectorMatrix<mytype> countbigmatrix(const VectorMatrix<mytype> &A, mytype omega)
+{
+	VectorMatrix<mytype> C(202);
+	for (int k = 0; k != A.count; k++)
+	{
+		std::vector<mytype> x(A.count);
+		std::vector<mytype> p(A.count);
+		x[k] = 1;
+		p[k] = 1;
+		for (int i = 0; i != A.count; i++)
+		{
+			mytype	sum = 0;
+			if (i == 0)
+				x[i] = ((-1)*omega*p[i+1] *A.value[2][i]+omega*A.rvalue[i])/A.value[1][i] +(1-omega) * p[i];
+			else if ( i == 201)
+				x[i] = ((-1)*omega*x[i-1] *A.value[0][i]+ omega*A.rvalue[i])/A.value[1][i] +(1-omega) * p[i];
+			else
+				x[i] = ((-1)*omega*p[i+1]*A.value[2][i] - omega*x[i-1]*A.value[0][i]+ omega * A.rvalue[i])/A.value[1][i] + (1-omega) * p[i];
+			}
+		for (int i = 0; i != A.count; i++)
+		{
+			C.value[i][k] = x[i];
+		}
+	}
+	std::cout << "COUNT C\n";
+	return (C);
+}
+
+
 VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype> &A, mytype omega)
 {
 	VectorMatrix<mytype> C(A.count);
@@ -206,8 +330,6 @@ VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype> &A, mytype omega)
 		std::vector<mytype> p(A.count);
 		x[k] = 1;
 		p[k] = 1;
-		// for (int i = 0; i != A.count; i++)
-		//   p[i] = x[i];
 		for (int i = 0; i != A.count; i++)
 		{
 			mytype	sum = 0;
@@ -279,6 +401,7 @@ std::vector<mytype> SmallRelax(const VectorMatrix<mytype> &A, int flag)
 		} while (octah_vect_norm(diff_vector(x, p, A.count), A.count) > (fabs(1 - norm_oct(countmatrix(A, omega)) / norm_oct(countmatrix(A, omega))) * EPS));
 		std::cout << "Octahedral norme of matrix C = " << norm_oct(countmatrix(A,omega)) << std::endl;
 	}
+	countmatrix(A,omega).print();
 	std::cout << "Number of iteration: " << iter << std::endl;
 	return x;
 }

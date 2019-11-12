@@ -24,6 +24,7 @@ public:
 			value.push_back(std::vector<T>(count));
 		}
 	}
+
 	~VectorMatrix()
 	{
 	}
@@ -45,14 +46,8 @@ public:
 					else
 						value[j][i] = 1;
 				}
-				else if (j == 1) {
-					if (i == 0)
-						value[j][i] = 6;
-					else if (i == 201)
-						value[j][i] = 9 - 3 * (202 % 2);
-					else
-						value[j][i] = 10 - 2 * (i % 2);
-				}
+				else if (j == 1)
+						value[j][i] = 4;
 				else if (j == 2) {
 					if (i == 201)
 						value[j][i] = 0;
@@ -61,6 +56,31 @@ public:
 				}
 			}
 		}
+		std::cout << "I'm really works fine\n";
+		for (int i = 0; i != count; i++)
+		{
+			//rvalue.push_back();
+			if (i == 0)
+				rvalue.push_back(6);
+			else if (i == 201)
+				rvalue.push_back(9 - 3 * (202 % 2));
+			else
+				rvalue.push_back(10 - 2 * (i % 2));
+		}
+}
+
+	void printC()
+	{
+		for (int j = 0; j != 3; j++)
+		{
+			for (int i = 0; i != count; i++)
+			{
+				std::cout << value[j][i] << " ";
+			}
+			std::cout << std::endl;
+		}
+	for (int i = 0; i != 202; i++)
+		std::cout << rvalue[i] << " ";
 	}
 
 	void init()
@@ -166,15 +186,11 @@ public:
 	friend VectorMatrix<mytype> countmatrix(const VectorMatrix<mytype>& A, double omega);
 	friend std::vector<mytype> SmallRelax(const VectorMatrix<mytype> & A);
 	friend mytype norm_C_big_oct(const VectorMatrix <mytype> &C);
-	mytype norm_C_big_cube(const VectorMatrix<mytype> &C);
-	//	friend  void delim(VectorMatrix <T> &A, int k);
-	//	friend void vych(VectorMatrix <T> &A, int k);
-	//	friend void GaussRight(VectorMatrix<T> &A);
-	//	friend void GaussLeft(VectorMatrix<T> &A);
-	//	void	QR_find_x(VectorMatrix<T>& A);
-	//	void	inverse_matrix(const VectorMatrix<T>& R, VectorMarix<T> & G);
-	//	friend  double *find_x(const VectorMatrix<T>& A, double *b_);
-	//	friend bool		degenerate_matrix(const VectorMatrix<T>& R);
-	//	double *multi_vect(std::vector<double> I, const VectorMatrix  <double> & F);
+	friend mytype norm_C_big_cube(const VectorMatrix<mytype> &C);
+	friend mytype Ufunc(const VectorMatrix<mytype> &A, bool flag);
+	friend mytype Lfunc(const VectorMatrix<mytype> &A, bool flag);
+	friend VectorMatrix<mytype> countbigmatrix(const VectorMatrix<mytype> &A, mytype omega);
+	friend mytype searchbigomeganorm(const VectorMatrix<mytype> &A);
+	friend mytype searchbigomegaiter(VectorMatrix<mytype> &A);
 };
 //double *abs_diff_vector(T *a, T *b, int DIM)
