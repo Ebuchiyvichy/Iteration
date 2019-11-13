@@ -56,7 +56,6 @@ public:
 				}
 			}
 		}
-		std::cout << "I'm really works fine\n";
 		for (int i = 0; i != count; i++)
 		{
 			//rvalue.push_back();
